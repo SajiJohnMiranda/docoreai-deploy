@@ -8,9 +8,7 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends \
  && rm -rf /var/lib/apt/lists/*
 
-# Install docoreai and groq, then remove heavy ML deps in the
-# same layer so they never land in the final image.
-RUN pip install --no-cache-dir docoreai groq && \
+RUN pip install --no-cache-dir docoreai && \
     pip uninstall -y torch torchvision torchaudio llmlingua 2>/dev/null || true
 
 ENV DOCOREAI_ENV_PATH=/app/data
@@ -20,9 +18,7 @@ WORKDIR /app
 
 COPY entrypoint.sh /entrypoint.sh
 COPY apply_config.py /app/apply_config.py
-COPY groq.py /app/groq.py
 COPY configs/ /app/configs/
-COPY prompts/ /app/prompts/
 
 RUN mkdir -p /app/data \
  && chmod +x /entrypoint.sh

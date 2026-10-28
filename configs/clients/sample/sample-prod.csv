@@ -1,0 +1,3 @@
+category,config_key,config_value
+learning_window,mandatory_floor_days,3
+learning_window,prompt_threshold,200

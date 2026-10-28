@@ -16,11 +16,8 @@ ENV DOCOREAI_CONFIG_DIR=/app/configs
 
 WORKDIR /app
 
-COPY entrypoint.sh /entrypoint.sh
 COPY apply_config.py /app/apply_config.py
 COPY configs/ /app/configs/
 
 RUN mkdir -p /app/data \
- && chmod +x /entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]

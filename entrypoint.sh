@@ -2,8 +2,7 @@
 set -e
 
 if [ -z "$DOCOREAI_CLIENT_ENV_ID" ]; then
-    echo "ERROR: DOCOREAI_CLIENT_ENV_ID is not set."
-    echo "  Example: DOCOREAI_CLIENT_ENV_ID=hsbc_prod"
+    echo "ERROR: DOCOREAI_CLIENT_ENV_ID is not set. Example: hsbc_prod"
     exit 1
 fi
 
@@ -27,11 +26,4 @@ echo "Starting DoCoreAI for client=$CLIENT env=$ENV"
 mkdir -p /app/data
 docoreai init
 python /app/apply_config.py
-docoreai start &
-
-for i in $(seq 1 30); do
-    docoreai status 2>/dev/null | grep -q "running" && break
-    sleep 2
-done
-
-exec python /app/groq.py /app/prompts.csv 100
+exec docoreai start

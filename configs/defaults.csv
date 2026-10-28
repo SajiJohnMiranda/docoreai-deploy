@@ -1,0 +1,5 @@
+category,config_key,config_value
+learning_window,mandatory_floor_days,2
+learning_window,prompt_threshold,100
+learning_window,fallback_day,2
+auto_retrain,days_since_last_training,5

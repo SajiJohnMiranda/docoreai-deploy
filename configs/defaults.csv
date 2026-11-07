@@ -1,5 +1,8 @@
 category,config_key,config_value
-learning_window,mandatory_floor_days,2
-learning_window,prompt_threshold,100
-learning_window,fallback_day,2
+learning_window,mandatory_floor_days,14
+learning_window,prompt_threshold,30000
+learning_window,fallback_day,16
 auto_retrain,days_since_last_training,5
+governance,enable_governance,0
+governance,enable_block_risky,0
+governance,confidence_threshold,70

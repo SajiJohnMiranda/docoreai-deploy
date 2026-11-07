@@ -56,8 +56,11 @@ def main():
     conn = get_connection()
     cur = conn.cursor()
 
+    # Apply phase2 settings
     TABLE = "wp_docoreai_phase2_config"
     for (category, key), value in settings.items():
+        if category == "governance":
+            continue  # handled separately below
         cur.execute(
             f"UPDATE {TABLE} SET config_value = ? WHERE category = ? AND config_key = ?",
             (value, category, key),
@@ -67,6 +70,23 @@ def main():
                 f"INSERT INTO {TABLE} (category, config_key, config_value) VALUES (?, ?, ?)",
                 (category, key, value),
             )
+
+    # Apply governance settings
+    gov = {key: val for (cat, key), val in settings.items() if cat == "governance"}
+    if gov:
+        cur.execute("""
+            UPDATE governance_settings SET
+                enable_governance   = ?,
+                enable_block_risky  = ?,
+                confidence_threshold = ?,
+                updated_at          = datetime('now')
+            WHERE id = 1
+        """, (
+            int(gov.get("enable_governance", 1)),
+            int(gov.get("enable_block_risky", 1)),
+            int(gov.get("confidence_threshold", 70)),
+        ))
+        print(f"Governance settings applied: {gov}")
 
     conn.commit()
     conn.close()
